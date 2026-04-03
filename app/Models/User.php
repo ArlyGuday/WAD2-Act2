@@ -6,6 +6,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Book;
+use App\Models\Category;
 
 class User extends Authenticatable
 {
@@ -44,5 +46,17 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    // One-to-One
+    public function book()
+    {
+        return $this->hasOne(Book::class);
+    }
+
+    // Many-to-Many
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
     }
 }
