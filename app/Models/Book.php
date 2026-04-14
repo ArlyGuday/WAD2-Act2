@@ -11,6 +11,12 @@ class Book extends Model
         'title',
         'user_id',
         'category_id',
+        'isbn',
+        'author',
+        'publisher',
+        'published_year',
+        'pages',
+        'genre',
     ];
 
     // One-to-One 
@@ -23,5 +29,11 @@ class Book extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    // Check if user owns this book
+    public function isOwnedBy(User $user): bool
+    {
+        return $this->user_id === $user->id || $user->isAdmin();
     }
 }

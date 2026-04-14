@@ -23,6 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -48,15 +49,27 @@ class User extends Authenticatable
         ];
     }
 
-    // One-to-One
-    public function book()
+    // One-to-Many
+    public function books()
     {
-        return $this->hasOne(Book::class);
+        return $this->hasMany(Book::class);
     }
 
     // Many-to-Many
     public function categories()
     {
         return $this->belongsToMany(Category::class);
+    }
+
+    // Helper method to check if user is admin
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    // Helper method to check if user is regular user
+    public function isUser(): bool
+    {
+        return $this->role === 'user';
     }
 }

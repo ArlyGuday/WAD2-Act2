@@ -41,6 +41,26 @@
                                 <td>{{ $book->pages }}</td>
                             </tr>
                             <tr>
+                                <th>Category</th>
+                                <td>
+                                    @if($book->category)
+                                        <span class="badge bg-secondary">{{ $book->category->name }}</span>
+                                    @else
+                                        <span class="text-muted">N/A</span>
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Owner</th>
+                                <td>
+                                    @if($book->user)
+                                        <strong>{{ $book->user->name }}</strong> ({{ $book->user->email }})
+                                    @else
+                                        <span class="text-muted">Unknown</span>
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
                                 <th>Genre</th>
                                 <td>{{ $book->genre }}</td>
                             </tr>
@@ -57,12 +77,16 @@
                         <div class="d-flex justify-content-between mt-3">
                             <a href="{{ route('books.index') }}" class="btn btn-secondary">Back to List</a>
                             <div>
-                                <a href="{{ route('books.edit', $book->id) }}" class="btn btn-warning">Edit</a>
-                                <form action="{{ route('books.destroy', $book->id) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this book?')">Delete</button>
-                                </form>
+                                @if($book->isOwnedBy(auth()->user()))
+                                    <a href="{{ route('books.edit', $book->id) }}" class="btn btn-warning">Edit</a>
+                                    <form action="{{ route('books.destroy', $book->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this book?')">Delete</button>
+                                    </form>
+                                @else
+                                    <span class="badge bg-warning">Read-Only (Not Owner)</span>
+                                @endif
                             </div>
                         </div>
                     </div>

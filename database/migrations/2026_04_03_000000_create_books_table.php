@@ -12,9 +12,11 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('author');
-            $table->year('publication_year');
+            $table->string('publisher');
+            $table->year('published_year');
             $table->string('isbn')->unique();
             $table->integer('pages');
+            $table->string('genre')->default('Fiction');
 
         
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
